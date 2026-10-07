@@ -30,6 +30,17 @@ function startBot() {
 
   bot.on('spawn', () => {
     console.log('[BOT] Bot spawned in the world.');
+    setInterval(() => {
+      if (bot.entity) {
+        bot.setControlState('jump', true);
+        setTimeout(() => bot.setControlState('jump', false), 500);
+
+        // Random slight head rotation
+        const yaw = Math.random() * Math.PI * 2;
+        const pitch = (Math.random() - 0.5) * Math.PI;
+        bot.look(yaw, pitch, true);
+      }
+    }, 15000); // Trigger every 15 seconds
   });
 
   bot.on('chat', (username, message) => {
