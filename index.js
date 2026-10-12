@@ -14,7 +14,7 @@ const BOT_CONFIG = {
   host: 'og-svp-smp.aternos.me', // Replace with your Aternos IP if changed
   port: 46823,                   // Replace with your Aternos Port
   username: 'BroisUp',
-  version: '1.20.1'              // Match your server version
+  version: false              // Match your server version
 };
 
 function startBot() {
