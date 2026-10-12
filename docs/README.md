@@ -29,9 +29,6 @@ First time using Node.js? You may want to start with the [tutorial](tutorial.md)
  * Activating blocks and using items.
  * Chat.
 
-### Roadmap
-
- Checkout [this page](https://github.com/PrismarineJS/mineflayer/wiki/Big-Prismarine-projects) to see what our current projects are.
 
 ## Installation
 
@@ -54,13 +51,12 @@ npm update
 | [FAQ.md](FAQ.md) | Got a question ? go there first |
 | **[api.md](api.md)** <br/>[unstable_api.md](unstable_api.md) | The full API reference |
 | [history.md](history.md) | The changelog for mineflayer |
-| [examples/](https://github.com/PrismarineJS/mineflayer/tree/master/examples) | Checkout all the mineflayer examples |
+| Checkout all the mineflayer examples |
 
 
 ## Contribute
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [prismarine-contribute](https://github.com/PrismarineJS/prismarine-contribute)
-
+highly editied and updated PrismarineJS original code by-
+zaid feinaan
 ## Usage
 
 **Videos**
