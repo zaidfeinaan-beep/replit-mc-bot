@@ -27,7 +27,8 @@ First time using Node.js? You may want to start with the [tutorial](tutorial.md)
  * Digging and building.
  * Miscellaneous stuff such as knowing your health and whether it is raining.
  * Activating blocks and using items.
- * Chat.
+ * use $chat for bot to Chat and use command restricted access to only 1 user.
+ * use $sleep or $unsleep for the bot to sleep at night or to get em of the bed
 
 
 ## Installation
