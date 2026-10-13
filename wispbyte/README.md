@@ -1,34 +1,47 @@
 # Wispbyte setup
 
-This folder is the small deployment bundle for the Minecraft bot. Upload only
-`index.js` and `package.json` to a Wispbyte Node.js server.
+This folder contains the small deployment bundle for the Minecraft bot. If
+Wispbyte has cloned the full repository, use the root Startup command below.
+If you upload only the files in this folder to the server root, use `npm start`.
 
 ## First-time setup
 
 1. Choose a **Node.js 22** runtime in Wispbyte's Startup settings.
-2. Upload these two files to the server's root folder.
-3. Set the Startup command to:
+2. Make sure `wispbyte/index.js`, `wispbyte/package.json`,
+   `wispbyte/prepare-runtime.js`, and `wispbyte/prune-minecraft-data.js` are
+   present. You can clone the whole repository or upload these four files to
+   the server's root folder.
+3. Set the Startup command to `npm run start:wispbyte` if the full repository
+   is uploaded. For only the four bundle files at the server root, set it to
+   `npm start`.
+
+The start script checks the local dependency tree and compact-data marker.
+It installs production dependencies and trims unused game data only when
+setup is missing or incomplete. Regular restarts do not reinstall or contact
+the repository or package registry.
+
+If you prefer a direct command instead of the package script, use:
 
    ```sh
-   npm ls --omit=dev --all >/dev/null 2>&1 || npm install --omit=dev || exit 1; npm start
+   cd wispbyte && npm start
    ```
 
-   This checks the locally installed production dependencies. It installs them
-   only when missing or invalid, then starts the bot. The initial install may
-   take longer; normal restarts skip it.
 4. If you connected the server to GitHub in Wispbyte, disable **Auto-update on
    startup** in its GitHub settings to stop pulling repository changes on every
-   start. This does not affect the local dependency check above.
+   start. This does not affect local dependency setup.
 
 The bot uses offline authentication and the defaults for this project:
 `og-svp-smp.aternos.me:46823`, username `BroisAwake`. Override them in
 Wispbyte's environment-variable settings with `MC_HOST`, `MC_PORT`, and
 `MC_USERNAME` if needed. No Microsoft password or token is required.
 
-The bot limits each login attempt to 15 seconds and retries 5 seconds later.
-This keeps retries fast when the address is reachable, but cannot make an
-offline or still-starting Minecraft server accept a connection within one
-minute. Start the Aternos server first and use its current Java Edition address.
+The bot is pinned to Java Edition 26.1, the version reported by the configured
+server, and limits each login attempt to 15 seconds before retrying 5 seconds
+later. The install script removes unused Bedrock and older Java data, cutting
+the `minecraft-data` package from about 433 MB to about 25 MB. This deployment
+will need its data refreshed if the server changes to another Minecraft version.
+An offline or still-starting Aternos server cannot be made to accept a
+connection within one minute.
 
 In game, any player can send `$sleep` or `$unsleep`. The `$chat` command remains
 restricted to `xyZgamerBSL`.

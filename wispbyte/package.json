@@ -5,13 +5,16 @@
   "description": "Mineflayer bot configured for Wispbyte",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "prestart": "node prepare-runtime.js",
+    "start": "node index.js",
+    "postinstall": "node prune-minecraft-data.js"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
-    "mineflayer": "^4.39.0",
-    "mineflayer-pathfinder": "^2.4.5"
+    "minecraft-data": "3.117.0",
+    "mineflayer": "4.39.0",
+    "mineflayer-pathfinder": "2.4.5"
   }
 }

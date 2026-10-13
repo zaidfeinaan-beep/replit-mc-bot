@@ -7,7 +7,7 @@ const BOT_CONFIG = {
   port: Number(process.env.MC_PORT || 46823),
   username: process.env.MC_USERNAME || 'BroisAwake',
   auth: 'offline',
-  version: false,
+  version: '26.1',
   closeTimeout: 10000,
   noPongTimeout: 1500
 }
