@@ -6,9 +6,11 @@ This project runs the Mineflayer bot in `index.js` using Node.js 22 or newer.
 
 - Press **Run** to start the **Minecraft bot** workflow, or run `npm start`.
 - The bot connects to the host and port in `index.js` using offline authentication.
-  Its current username is `BroisUp`.
+  Its current username is `BroisAwake`.
 - The bot reconnects after unexpected disconnects. It also has anti-AFK movement
   and responds to the `$sleep`, `$unsleep`, and restricted `$chat` commands.
+- Server-version detection and login attempts are time-limited; login is capped
+  at 15 seconds and reconnects start after 5 seconds.
 - The bot starts `server.js`, an Express health page on port 3000, as well.
 - Press **Stop** to disconnect.
 

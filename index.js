@@ -20,14 +20,26 @@ const { GoalNear } = require("mineflayer-pathfinder").goals;
 const BOT_CONFIG = {
   host: "og-svp-smp.aternos.me", // Replace with your Aternos IP if changed
   port: 46823, // Replace with your Aternos Port
-  username: "BroisUp",
+  username: "BroisAwake",
   auth: "offline",
   version: false, // Match your server version
+  closeTimeout: 10000,
+  noPongTimeout: 1500,
 };
+const LOGIN_TIMEOUT_MS = 15000;
+const RECONNECT_DELAY_MS = 5000;
 
 function startBot() {
-  console.log("Connecting Mineflayer bot...");
+  console.log(
+    `Connecting ${BOT_CONFIG.username} to ${BOT_CONFIG.host}:${BOT_CONFIG.port}...`,
+  );
   const bot = mineflayer.createBot(BOT_CONFIG);
+  let antiAfkInterval;
+
+  const loginTimeout = setTimeout(() => {
+    console.error("[BOT] Login took too long; reconnecting.");
+    bot.quit("Login timed out");
+  }, LOGIN_TIMEOUT_MS);
 
   try {
     bot.loadPlugin(require("mineflayer-pathfinder").pathfinder);
@@ -38,6 +50,7 @@ function startBot() {
   }
 
   bot.on("login", () => {
+    clearTimeout(loginTimeout);
     console.log(
       `[BOT] ${bot.username} has logged into the server successfully.`,
     );
@@ -49,8 +62,8 @@ function startBot() {
     const originalPosition = bot.entity ? bot.entity.position.clone() : null;
 
     // Anti-AFK jump, head movement, and periodic walk/return routine (every 30 seconds)
-    setInterval(() => {
-      if (!bot.entity) return;
+    antiAfkInterval = setInterval(() => {
+      if (!bot.entity || bot.isSleeping) return;
 
       bot.setControlState("jump", true);
       setTimeout(() => bot.setControlState("jump", false), 500);
@@ -94,7 +107,7 @@ function startBot() {
     console.log(`[CHAT] <${username}> ${message}`);
 
     // Public commands: Anyone can use $sleep and$unsleep
-    if (message === "$sleep") {
+    if (message.trim().toLowerCase() === "$sleep") {
       try {
         const bedBlock = bot.findBlock({
           matching: (block) => bot.isABed(block),
@@ -111,7 +124,11 @@ function startBot() {
         console.error("Failed to sleep:", err);
         bot.chat("I could not go to sleep right now.");
       }
-    } else if (message === "$unsleep") {
+    } else if (message.trim().toLowerCase() === "$unsleep") {
+      if (!bot.isSleeping) {
+        bot.chat("I am not in bed right now.");
+        return;
+      }
       try {
         await bot.wake();
         bot.chat("Good morning!");
@@ -137,10 +154,12 @@ function startBot() {
   });
 
   bot.on("end", (reason) => {
+    clearTimeout(loginTimeout);
+    clearInterval(antiAfkInterval);
     console.log(
-      `[BOT DISCONNECTED] Reason: ${reason}. Reconnecting in 15 seconds...`,
+      `[BOT DISCONNECTED] Reason: ${reason}. Reconnecting in ${RECONNECT_DELAY_MS / 1000} seconds...`,
     );
-    setTimeout(startBot, 15000);
+    setTimeout(startBot, RECONNECT_DELAY_MS);
   });
 
   bot.on("error", (err) => {
