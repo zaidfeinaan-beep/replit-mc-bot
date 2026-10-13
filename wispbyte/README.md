@@ -10,7 +10,7 @@ This folder is the small deployment bundle for the Minecraft bot. Upload only
 3. Set the Startup command to:
 
    ```sh
-   npm ls --omit=dev --depth=0 >/dev/null 2>&1 || npm install --omit=dev || exit 1; npm start
+   npm ls --omit=dev --all >/dev/null 2>&1 || npm install --omit=dev || exit 1; npm start
    ```
 
    This checks the locally installed production dependencies. It installs them
@@ -32,3 +32,11 @@ minute. Start the Aternos server first and use its current Java Edition address.
 
 In game, any player can send `$sleep` or `$unsleep`. The `$chat` command remains
 restricted to `xyZgamerBSL`.
+
+## If Wispbyte reports `Cannot find module 'setprototypeof'`
+
+That package is a transitive Express dependency in the full repository; the
+two-file Wispbyte bot bundle does not use Express. Confirm Wispbyte is running
+this folder's `package.json` and `index.js`, not the full repository's root
+`index.js` or `server.js`. The startup command above also reinstalls production
+dependencies if the installed dependency tree is incomplete.
