@@ -108,6 +108,12 @@ function startBot() {
 
     // Public commands: Anyone can use $sleep and$unsleep
     if (message.trim().toLowerCase() === "$sleep") {
+      if (bot.isSleeping) {
+        bot.chat(
+          "can you hold on im try catch nap, ur mum              didn't teach u manner i presume",
+        );
+        return;
+      }
       try {
         const bedBlock = bot.findBlock({
           matching: (block) => bot.isABed(block),
@@ -131,6 +137,15 @@ function startBot() {
       }
       try {
         await bot.wake();
+        // Force a physical stance update and packet sync
+        bot.setControlState("sneak", true);
+        setTimeout(() => {
+          bot.setControlState("sneak", false);
+          bot.setControlState("jump", true);
+          setTimeout(() => {
+            bot.setControlState("jump", false);
+          }, 100);
+        }, 100);
         bot.chat("Good morning!");
       } catch (err) {
         console.error("Failed to wake up:", err);
