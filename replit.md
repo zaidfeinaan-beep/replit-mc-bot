@@ -1,34 +1,34 @@
 # Running the imported Mineflayer project
 
-This remains the original CommonJS Mineflayer library, with a small console bot
-entry point added in `examples/replit-bot.js`. Use Node.js 22 or newer.
+This project runs the Mineflayer bot in `index.js` using Node.js 22 or newer.
 
 ## Run
 
 - Press **Run** to start the **Minecraft bot** workflow, or run `npm start`.
-- The bot reads `bot.config.json`, connects using an offline username, and logs
-  login, spawn, chat, kick, error, and disconnect events to the Console.
-- Press **Stop** to disconnect. After an unexpected disconnect, check the server
-  and press **Run** again. No automatic reconnect or anti-AFK behavior is enabled.
-- This is a console bot, not a web app; no web preview or HTTP port is needed.
+- The bot connects to the host and port in `index.js` using offline authentication.
+  Its current username is `BroisUp`.
+- The bot reconnects after unexpected disconnects. It also has anti-AFK movement
+  and responds to the `$sleep`, `$unsleep`, and restricted `$chat` commands.
+- The bot starts `server.js`, an Express health page on port 3000, as well.
+- Press **Stop** to disconnect.
 
 ## Configuration
 
-Edit `bot.config.json` to change the host, port, or offline username.
-The configured server must be running and reachable, permit offline players,
-and allow the bot to join. Minecraft version is detected automatically.
-If a whitelist is enabled, add the bot username through the server's normal
-administration tools. Only use the bot where you have permission.
+Edit the `BOT_CONFIG` object in `index.js` to change the host, port, username,
+or authentication mode. The configured Minecraft Java server must be running,
+reachable, and allow the bot to join. If a whitelist is enabled, add the bot
+username through the server's normal administration tools. Only use the bot
+where you have permission.
 
-Do not store passwords or authentication tokens in the config. Microsoft login
-is not configured by this offline-only runner.
+Do not store passwords or authentication tokens in the source code.
 
 ## Checks
 
-- `node --check examples/replit-bot.js`
-- `npx --no-install standard examples/replit-bot.js`
-- A successful live connection prints both `Logged in as ...` and
-  `Bot spawned and is connected`.
+- `node --check index.js`
+- A successful connection prints `[BOT] Bot spawned in the world.`
+- If the log says `Connection closed before the server sent a status response`,
+  make sure the Aternos server is started and the host and port match its
+  current Java Edition server address. The bot retries after 15 seconds.
 
 The repository's full `npm test` suite includes Minecraft-server integration
 tests; it is separate from checking this bot's connection.
